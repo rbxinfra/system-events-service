@@ -43,7 +43,7 @@ deployment:
             - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-http.rule=(Host(`systemevents.api.sitetest4.robloxlabs.com`))"
             - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-http.entrypoints=http"
             - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-http.middlewares=local-network-only"
-            - "traefik.http.middlewares.local-network-only.ipwhitelist.sourcerange=10.128.0.0/16"
+            - "traefik.http.middlewares.local-network-only.ipwhitelist.sourcerange=10.128.0.0/16,172.17.0.0/16"
           checks:
             - type: http
               path: /health
@@ -59,7 +59,7 @@ deployment:
             - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-https.entrypoints=https"
             - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-https.tls=true"
             - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-https.middlewares=local-network-only"
-            - "traefik.http.middlewares.local-network-only.ipwhitelist.sourcerange=10.128.0.0/16"
+            - "traefik.http.middlewares.local-network-only.ipwhitelist.sourcerange=10.128.0.0/16,172.17.0.0/16"
           checks:
             - type: http
               path: /health

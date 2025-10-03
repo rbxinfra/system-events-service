@@ -5,6 +5,7 @@ using System.Linq;
 
 using Google.Protobuf.WellKnownTypes;
 
+using Paging;
 using Systemevents.Systemevents.V1;
 
 /// <summary>
@@ -52,26 +53,18 @@ public static class ModelConversionExtensions
         };
 
     /// <summary>
-    /// Converts a <see cref="LogEventPayload"/> to a <see cref="LogEventResponse"/>
+    /// Converts a <see cref="PagedResult{TCount, TPagedItem}"/> to a <see cref="QueryEventsResponse"/>
     /// </summary>
-    /// <param name="response">The <see cref="LogEventPayload"/></param>
-    /// <returns>The <see cref="LogEventResponse"/></returns>
-    public static LogEventResponse ToGrpc(this LogEventPayload response)
-        => new() { Event = response.Data.ToGrpc() };
-
-    /// <summary>
-    /// Converts a <see cref="QueryEventsPayload"/> to a <see cref="QueryEventsResponse"/>
-    /// </summary>
-    /// <param name="response">The <see cref="QueryEventsPayload"/></param>
+    /// <param name="response">The <see cref="PagedResult{TCount, TPagedItem}"/></param>
     /// <returns>The <see cref="QueryEventsResponse"/></returns>
-    public static QueryEventsResponse ToGrpc(this QueryEventsPayload response)
+    public static QueryEventsResponse ToGrpc(this PagedResult<int, EventModel> response)
     {
         var grpcResponse = new QueryEventsResponse
         {
-            Count = response.Data.Count
+            Count = response.Count
         };
 
-        grpcResponse.PageItems.AddRange(response.Data.PageItems.Select(item => item.ToGrpc()));
+        grpcResponse.PageItems.AddRange(response.PageItems.Select(item => item.ToGrpc()));
 
         return grpcResponse;
     }

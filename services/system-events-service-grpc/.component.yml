@@ -40,13 +40,12 @@ deployment:
             - bedev2
             - product=system-events
             - "traefik.enable=true"
-            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.rule=(Host(`apis.simulprod.com`) && Header(`authority`, `roblox.systemevents.systemevents.v1`))"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.rule=(Host(`apis.simulprod.com`) && Headers(`authority`, `roblox.systemevents.systemevents.v1`))"
             - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.entrypoints=https"
             - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.tls=true"
             - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.middlewares=local-network-only"
-            - "traefik.http.middlewares.local-network-only.ipwhitelist.sourcerange=10.128.0.0/16"
-          checks:
-            - type: grpc
+            - "traefik.http.middlewares.local-network-only.ipwhitelist.sourcerange=10.128.0.0/16,172.17.0.0/16"
+            - "traefik.http.services.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.loadbalancer.server.scheme=https"
 
       config_maps:
         - destination: secrets/file.env

@@ -601,3 +601,9 @@ jobs:
 
             core.setOutput('action-inputs', JSON.stringify(actionInputs));
 
+      - name: Dispatch Deployment
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: deploy.yml
+          inputs: ${{ steps.get-deployable-components.outputs.action-inputs }}
+          token: ${{ secrets.DEPLOYER_TOKEN }}

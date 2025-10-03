@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Roblox.Paging" Version="1.2.4" />
     <PackageReference Include="Roblox.Caching" Version="1.2.4" />
     <PackageReference Include="Roblox.Data" Version="1.2.4" />
     <PackageReference Include="Roblox.Entities.Mssql" Version="1.2.4" />

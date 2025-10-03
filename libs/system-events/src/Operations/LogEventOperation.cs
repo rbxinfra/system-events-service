@@ -15,13 +15,13 @@ using EventEntity = Entities.Event;
 /// </summary>
 /// <param name="logger">The <see cref="ILogger"/> for debug logging.</param>
 /// <param name="settings">The <see cref="ISettings"/>.</param>
-public class LogEventOperation(ILogger logger, ISettings settings) : IResultOperation<LogEventInput, LogEventPayload>
+public class LogEventOperation(ILogger logger, ISettings settings) : IResultOperation<LogEventInput, EventModel>
 {
     private readonly ILogger _Logger = logger ?? throw new ArgumentNullException(nameof(logger));
     private readonly ISettings _Settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
     /// <inheritdoc cref="IResultOperation{TRequest, TResult}.Execute(TRequest)"/>
-    public (LogEventPayload Output, OperationError Error) Execute(LogEventInput input)
+    public (EventModel Output, OperationError Error) Execute(LogEventInput input)
     {
         if (string.IsNullOrEmpty(input.Type)) return (null, new(SystemEventsErrors.TypeNotSpecified));
         if (string.IsNullOrEmpty(input.Summary)) return (null, new(SystemEventsErrors.SummaryNotSpecified));
@@ -39,14 +39,11 @@ public class LogEventOperation(ILogger logger, ISettings settings) : IResultOper
 
         return (new()
         {
-            Data = new()
-            {
-                Id = @event.ID,
-                Type = eventType.Value,
-                Subtype = eventSubtype?.Value ?? "",
-                Summary = eventSummary.Value,
-                Timestamp = @event.Created
-            }
+            Id = @event.ID,
+            Type = eventType.Value,
+            Subtype = eventSubtype?.Value ?? "",
+            Summary = eventSummary.Value,
+            Timestamp = @event.Created
         }, null);
     }
 }

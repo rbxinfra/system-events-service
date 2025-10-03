@@ -3,6 +3,7 @@
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
 
+    <PackageReference Include="Roblox.Paging" Version="1.2.4" />
     <PackageReference Include="Roblox.Configuration" Version="1.2.4" />
     <PackageReference Include="Roblox.Web.Framework.Services.Grpc" Version="1.2.7" />
 

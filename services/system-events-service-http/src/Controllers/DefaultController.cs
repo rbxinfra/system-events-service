@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
+using Paging;
 using Web.Framework.Services.Http;
 
 /// <summary>
@@ -47,7 +48,7 @@ public class DefaultController : Controller
     /// <li>Summary must not exceed N characters in length!</li>
     /// </response>
     [HttpPost($"/v1/{nameof(LogEvent)}")]
-    [ProducesResponseType(200, Type = typeof(LogEventPayload))]
+    [ProducesResponseType(200, Type = typeof(Payload<EventModel>))]
     [ProducesResponseType(400)]
     public IActionResult LogEvent([FromBody][ValidateNever] LogEventInput request)
         => _OperationExecutor.Execute(_SystemEventsOperations.LogEventOperation, request);
@@ -61,7 +62,7 @@ public class DefaultController : Controller
     /// <li>Start date must be specified alongside end date.</li>
     /// </response>
     [HttpGet($"/v1/{nameof(QueryEvents)}")]
-    [ProducesResponseType(200, Type = typeof(QueryEventsPayload))]
+    [ProducesResponseType(200, Type = typeof(Payload<PagedResult<int, EventModel>>))]
     [ProducesResponseType(400)]
     public IActionResult QueryEvents([FromQuery][ValidateNever] QueryEventsInput request)
         => _OperationExecutor.Execute(_SystemEventsOperations.QueryEventsOperation, request);

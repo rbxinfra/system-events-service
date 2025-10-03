@@ -41,7 +41,7 @@ public class SystemEventsAPI : SystemEventsAPIGrpc.SystemEventsAPIBase
 
     /// <inheritdoc cref="SystemEventsAPIGrpc.SystemEventsAPIBase.LogEvent(LogEventRequest, ServerCallContext)"/>
     public override Task<LogEventResponse> LogEvent(LogEventRequest request, ServerCallContext context)
-        => Task.FromResult(_operationExecutor.Execute(_systemEventsOperations.LogEventOperation, request.FromGrpc()).ToGrpc());
+        => Task.FromResult(new LogEventResponse { Event = _operationExecutor.Execute(_systemEventsOperations.LogEventOperation, request.FromGrpc()).ToGrpc() });
 
     /// <inheritdoc cref="SystemEventsAPIGrpc.SystemEventsAPIBase.QueryEvents(QueryEventsRequest, ServerCallContext)"/>
     public override Task<QueryEventsResponse> QueryEvents(QueryEventsRequest request, ServerCallContext context)

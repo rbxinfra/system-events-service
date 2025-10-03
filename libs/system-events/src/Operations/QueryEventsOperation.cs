@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
+using Paging;
 using EventLog;
 using Operations;
 
@@ -15,12 +16,12 @@ using EventEntity = Entities.Event;
 /// Operation used to query system events.
 /// </summary>
 /// <param name="logger">The <see cref="ILogger"/> used for debug logging</param>
-public class QueryEventsOperation(ILogger logger) : IResultOperation<QueryEventsInput, QueryEventsPayload>
+public class QueryEventsOperation(ILogger logger) : IResultOperation<QueryEventsInput, PagedResult<int, EventModel>>
 {
     private readonly ILogger _Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     /// <inheritdoc cref="IResultOperation{TRequest, TResponse}.Execute(TRequest)"/>
-    public (QueryEventsPayload Output, OperationError Error) Execute(QueryEventsInput input)
+    public (PagedResult<int, EventModel> Output, OperationError Error) Execute(QueryEventsInput input)
     {
         var page = input.Page;
         var pageSize = input.PageSize;
@@ -106,13 +107,13 @@ public class QueryEventsOperation(ILogger logger) : IResultOperation<QueryEvents
             Timestamp = entity.Created
         });
 
-        var response = new PagedResultModel<EventModel>
+        var response = new PagedResult<int, EventModel>
         {
             Count = totalNumberOfEvents
         };
 
         response.PageItems = [.. eventTypes];
 
-        return (new() { Data = response }, null);
+        return (response, null);
     }
 }
