@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{085F844B-1620-4D9D-B4AE-E718F26634B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system-events", "system-events", "{D13CAEEC-7834-461B-A261-0E8787C96380}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roblox.SystemEvents", "libs\system-events\src\Roblox.SystemEvents.csproj", "{05FAC33D-0456-48A5-A011-93051E62FD23}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{49C9892A-C518-4450-AC02-FDD036699237}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system-events-service", "system-events-service", "{DBCA75F8-294F-41FB-BF89-BE71EDA7E626}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roblox.SystemEvents.Service", "services\system-events-service-http\src\Roblox.SystemEvents.Service.csproj", "{6562FCC1-BFA5-40C5-A32E-25B91BE2652B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05FAC33D-0456-48A5-A011-93051E62FD23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05FAC33D-0456-48A5-A011-93051E62FD23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05FAC33D-0456-48A5-A011-93051E62FD23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05FAC33D-0456-48A5-A011-93051E62FD23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6562FCC1-BFA5-40C5-A32E-25B91BE2652B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6562FCC1-BFA5-40C5-A32E-25B91BE2652B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6562FCC1-BFA5-40C5-A32E-25B91BE2652B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6562FCC1-BFA5-40C5-A32E-25B91BE2652B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D13CAEEC-7834-461B-A261-0E8787C96380} = {085F844B-1620-4D9D-B4AE-E718F26634B4}
+		{05FAC33D-0456-48A5-A011-93051E62FD23} = {D13CAEEC-7834-461B-A261-0E8787C96380}
+		{DBCA75F8-294F-41FB-BF89-BE71EDA7E626} = {49C9892A-C518-4450-AC02-FDD036699237}
+		{6562FCC1-BFA5-40C5-A32E-25B91BE2652B} = {DBCA75F8-294F-41FB-BF89-BE71EDA7E626}
+	EndGlobalSection
+EndGlobal

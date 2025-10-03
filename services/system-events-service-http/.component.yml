@@ -1,0 +1,76 @@
+component: system-events-service-bedev1
+
+build:
+  project_file: src/Roblox.SystemEvents.Service.csproj
+  component_directory: ./.deploy
+
+  additional_args:
+    - -p:DockerTag=${{ env.NOMAD_VERSION }}
+
+  docker:
+    docker_file: Dockerfile
+    image_name: docker.artifactory.rbx.com/micro-services-platform/system-events-service
+    
+deployment:
+  count: 3
+
+  job: ${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service
+
+  vault_policies:
+    - vault_secret_settings_providers_token_reader
+
+  # Passed to the meta section in Nomad
+  meta:
+    ENVIRONMENT: ${{ env.NOMAD_ENVIRONMENT }}
+
+  containers: # Maps to the groups section in Nomad
+    - image: docker.artifactory.rbx.com/micro-services-platform/system-events-service
+      resources:
+        cpu: ${{ env.NOMAD_CPU }}
+        ram: ${{ env.NOMAD_RAM }}
+      network:
+        ports:
+          http: 
+            to: 5000
+      services:
+        - name: ${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-http
+          port: http
+          tags:
+            - ${{ env.NOMAD_ENVIRONMENT }}
+            - Roblox.SystemEvents.Service
+            - SystemEvents
+            - "traefik.enable=true"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-http.rule=(Host(`systemevents.api.sitetest4.robloxlabs.com`))"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-http.entrypoints=http"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-http.middlewares=local-network-only"
+            - "traefik.http.middlewares.local-network-only.ipwhitelist.sourcerange=10.128.0.0/16"
+          checks:
+            - type: http
+              path: /health
+ 
+        - name: ${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-https
+          port: http
+          tags:
+            - ${{ env.NOMAD_ENVIRONMENT }}
+            - Roblox.SystemEvents.Service
+            - SystemEvents
+            - "traefik.enable=true"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-https.rule=(Host(`systemevents.api.sitetest4.robloxlabs.com`))"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-https.entrypoints=https"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-https.tls=true"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-https.middlewares=local-network-only"
+            - "traefik.http.middlewares.local-network-only.ipwhitelist.sourcerange=10.128.0.0/16"
+          checks:
+            - type: http
+              path: /health
+
+      config_maps:
+        - destination: secrets/file.env
+          env: true
+          on_change: restart
+          data: |
+            ASPNETCORE_URLS="http://+:5000"
+            AppName=Roblox.SystemEvents.SystemEventsService
+            DEFAULT_LOG_LEVEL=Information
+            VAULT_ADDR="http://vault.service.consul:8200"
+            VAULT_TOKEN="{{ with secret "secret/teams/applications/vault-providers" }}{{ .Data.vault_token }}{{ end }}"

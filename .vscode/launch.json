@@ -1,0 +1,20 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: Roblox.SystemEvents.Service gRPC Debug",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/services/system-events-service-grpc/src/Roblox.SystemEvents.Service.csproj"
+        },
+        {
+            "name": "C#: Roblox.SystemEvents.Service HTTP Debug",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/services/system-events-service-http/src/Roblox.SystemEvents.Service.csproj"
+        }
+    ]
+}

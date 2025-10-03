@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Logic and operations implementation for system-events-service</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Roblox.Caching" Version="1.2.4" />
+    <PackageReference Include="Roblox.Data" Version="1.2.4" />
+    <PackageReference Include="Roblox.Entities.Mssql" Version="1.2.4" />
+    <PackageReference Include="Roblox.MssqlDatabases" Version="1.2.7" />
+    <PackageReference Include="Roblox.Operations" Version="1.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Roblox.SystemEvents.Service" />
+  </ItemGroup>
+
+</Project>

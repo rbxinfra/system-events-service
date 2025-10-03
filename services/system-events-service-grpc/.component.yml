@@ -1,0 +1,60 @@
+component: system-events-service-bedev2
+
+build:
+  project_file: src/Roblox.SystemEvents.Service.csproj
+  component_directory: ./.deploy
+
+  additional_args:
+    - -p:DockerTag=${{ env.NOMAD_VERSION }}
+
+  docker:
+    docker_file: Dockerfile
+    image_name: docker.artifactory.rbx.com/micro-services-platform/system-events-service-grpc
+    
+deployment:
+  count: 1
+
+  job: ${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-bd2
+
+  vault_policies:
+    - vault_secret_settings_providers_token_reader
+
+  # Passed to the meta section in Nomad
+  meta:
+    ENVIRONMENT: ${{ env.NOMAD_ENVIRONMENT }}
+
+  containers: # Maps to the groups section in Nomad
+    - image: docker.artifactory.rbx.com/micro-services-platform/system-events-service-grpc
+      resources:
+        cpu: ${{ env.NOMAD_CPU }}
+        ram: ${{ env.NOMAD_RAM }}
+      network:
+        ports:
+          grpc: 
+            to: 5000
+      services:
+        - name: ${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc
+          port: grpc
+          tags:
+            - ${{ env.NOMAD_ENVIRONMENT }}
+            - bedev2
+            - product=system-events
+            - "traefik.enable=true"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.rule=(Host(`apis.simulprod.com`) && Header(`authority`, `roblox.systemevents.systemevents.v1`))"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.entrypoints=https"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.tls=true"
+            - "traefik.http.routers.${{ env.NOMAD_ENVIRONMENT }}-roblox-system-events-service-grpc.middlewares=local-network-only"
+            - "traefik.http.middlewares.local-network-only.ipwhitelist.sourcerange=10.128.0.0/16"
+          checks:
+            - type: grpc
+
+      config_maps:
+        - destination: secrets/file.env
+          env: true
+          on_change: restart
+          data: |
+            ASPNETCORE_URLS="https://+:5000"
+            AppName=Roblox.SystemEvents.SystemEventsService
+            DEFAULT_LOG_LEVEL=Information
+            VAULT_ADDR="http://vault.service.consul:8200"
+            VAULT_TOKEN="{{ with secret "secret/teams/applications/vault-providers" }}{{ .Data.vault_token }}{{ end }}"

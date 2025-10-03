@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
+
+    <PackageReference Include="Roblox.Configuration" Version="1.2.4" />
+    <PackageReference Include="Roblox.Web.Framework.Services.Grpc" Version="1.2.7" />
+
+    <PackageReference Include="Roblox.Systemevents.Systemevents.V1.SystemEventsAPI" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../../libs/system-events/src/Roblox.SystemEvents.csproj" />
+  </ItemGroup>
+
+</Project>
